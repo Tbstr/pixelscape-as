@@ -104,7 +104,7 @@ package de.pixelscape.display.blitting
 		{
 			// cancellation
 			if(_playing) return;
-			if(!_loop && _currentFrame >= _frames.length);
+			if(!_loop && _currentFrame >= _frames.length) return;
 			
 			// seek
 			if(fromFrame != -1) seek(fromFrame);
