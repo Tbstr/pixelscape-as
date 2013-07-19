@@ -4,6 +4,7 @@ package de.pixelscape.utils
 	import de.pixelscape.output.notifier.Notifier;
 	
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
@@ -123,6 +124,8 @@ package de.pixelscape.utils
 			
 			for each(var obj:DisplayObject in objs)
 			{
+				if(!(obj is DisplayObjectContainer)) continue;
+				
 				objBounds = obj.getBounds(TopLevelUtils.stage);
 				
 				currDist = MathUtils.dist(e.stageX, e.stageY, objBounds.x + (objBounds.width * .5), objBounds.y + (objBounds.height * .5));
