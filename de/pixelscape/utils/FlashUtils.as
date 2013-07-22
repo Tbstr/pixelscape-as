@@ -106,6 +106,12 @@ package de.pixelscape.utils
 			}
 		}
 		
+		public static function clearContainer(container:DisplayObjectContainer):void
+		{
+			if(container == null) return;
+			while(container.numChildren != 0) container.removeChildAt(0);
+		}
+		
 		/* dragging */
 		public static function makeDraggable(object:DisplayObject):void
 		{
