@@ -87,11 +87,7 @@ package de.pixelscape.utils
 		
 		private function report():void
 		{
-			var message:String = "DRAGGR\n\n";
-			message += String(_target)+"\n\n";
-			message += "x: "+_target.x;
-			message += "\ny: "+_target.y;
-			
+	 		var message:String = "obj.x = "+_target.x+";\nobj.y = "+_target.y+';';
 			Notifier.notify(message);
 		}
 		

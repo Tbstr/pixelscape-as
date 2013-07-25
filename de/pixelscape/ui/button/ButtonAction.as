@@ -38,5 +38,13 @@ package de.pixelscape.ui.button
 		{
 			return this._arguments;
 		}
+		
+		/* finalization */
+		public function finalize():void
+		{
+			_eventType = null;
+			_functionCall = null;
+			_arguments = null;
+		}
 	}
 }

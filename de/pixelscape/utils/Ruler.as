@@ -124,8 +124,6 @@ package de.pixelscape.utils
 			
 			for each(var obj:DisplayObject in objs)
 			{
-				if(!(obj is DisplayObjectContainer)) continue;
-				
 				objBounds = obj.getBounds(TopLevelUtils.stage);
 				
 				currDist = MathUtils.dist(e.stageX, e.stageY, objBounds.x + (objBounds.width * .5), objBounds.y + (objBounds.height * .5));

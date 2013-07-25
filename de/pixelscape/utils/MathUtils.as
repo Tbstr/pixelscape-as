@@ -191,5 +191,15 @@ package de.pixelscape.utils {
 			
 			return currentCandidate;
 		}
+		
+		public static function bin2dec(value:String):int
+		{
+			return parseInt(value, 2);
+		}
+		
+		public static function dec2bin(value:uint):String
+		{
+			return value.toString(2);
+		}
 	}
 }

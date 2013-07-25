@@ -15,17 +15,17 @@ package de.pixelscape.ui.button
 		/* variables */
 		private var _id:String;
 		
-		private var _mouseDownCoordinates:Point		= new Point();
+		private var _mouseDownCoordinates:Point			= new Point();
 		private var _draging:Boolean;
-		private var _dispatchDragEvents:Boolean		= false;
+		private var _dispatchDragEvents:Boolean			= false;
 		
 		private var _highlight:Boolean;
-		private var _enabled:Boolean				= true;
+		private var _enabled:Boolean					= true;
 		
-		private var _data:Object					= new Object();
-		private var _actions:Array					= new Array();
+		private var _data:Object						= new Object();
+		private var _actions:Vector.<ButtonAction>		= new Vector.<ButtonAction>();
 
-		private var _hitArea:Sprite					= this as Sprite;
+		private var _hitArea:Sprite						= this as Sprite;
 
 		public function Button(id:String = null)
 		{
@@ -69,7 +69,7 @@ package de.pixelscape.ui.button
 			_actions.push(new ButtonAction(eventType, functionCall, arguments));
 		}
 		
-		public function executeEvents(eventType:String):void
+		private function executeEvents(eventType:String):void
 		{
 			for(var i:uint = 0; i < this._actions.length; i++)
 			{
@@ -300,6 +300,9 @@ package de.pixelscape.ui.button
 		{
 			// unregister listeners
 			unregisterButtonListeners(_hitArea);
+			
+			// finalize actions
+			for each(var action:ButtonAction in _actions) action.finalize();
 		}
 	}
 }
