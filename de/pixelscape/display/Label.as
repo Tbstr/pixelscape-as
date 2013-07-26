@@ -1,16 +1,12 @@
 package de.pixelscape.display 
-{	import de.pixelscape.output.notifier.Notifier;
-	import de.pixelscape.utils.Analysis;
-	import de.pixelscape.utils.Clooney;
-	import de.pixelscape.utils.FlashUtils;
-	
-	import flash.display.DisplayObjectContainer;
+{	import flash.display.DisplayObjectContainer;
 	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
-	import org.osmf.utils.Version;
+	import de.pixelscape.utils.Clooney;
+	import de.pixelscape.utils.FlashUtils;
 
 	/**	 * @author Tobias Friese	 */	public class Label extends TextField 
 	{		/* variables */
@@ -34,9 +30,6 @@ package de.pixelscape.display
 			if(textFormat != null) this.defaultTextFormat = textFormat;
 			
 			this.text = value;
-			
-			this.x = x;
-			this.y = y;
 		}
 		
 		/* static constructor */
