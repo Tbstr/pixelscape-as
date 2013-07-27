@@ -18,14 +18,7 @@ package de.pixelscape.utils
 			var textBlock:TextBlock = new TextBlock(textElement);
 			
 			// text line
-			var maxWidth:Number = 1000000;
-			if(properties != null && 'maxWidth' in properties)
-			{
-				maxWidth = properties.maxWidth;
-				delete properties.maxWidth;
-			}
-			
-			var textLine:TextLine = textBlock.createTextLine(null, maxWidth);
+			var textLine:TextLine = textBlock.createTextLine();
 			
 			// apply properties
 			applyProperties(textLine, properties);
