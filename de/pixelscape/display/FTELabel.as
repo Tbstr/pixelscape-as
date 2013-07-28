@@ -21,6 +21,8 @@ package de.pixelscape.display
 		private var _maxWidth:Number;
 		private var _align:String;
 		
+		private var _numLines:int;
+		
 		/* constants */
 		private static const MAX_WIDTH_DEFAULT:Number		= 1000000;
 		
@@ -55,6 +57,7 @@ package de.pixelscape.display
 			
 			// text line(s)
 			var y:Number = 0;
+			var c:int = 0;
 			var line:TextLine = null;
 			while((line = _textBlock.createTextLine(line, _maxWidth)) != null)
 			{
@@ -75,9 +78,13 @@ package de.pixelscape.display
 				// add
 				addChild(line);
 				
-				// advance y cursor
+				// advance
 				y += line.height;
+				c++;
 			}
+			
+			// set vars
+			_numLines = c;
 		}
 		
 		/* static constructor */
@@ -120,9 +127,13 @@ package de.pixelscape.display
 			build();
 		}
 		
+		public function get align():String				{ return _align; }
+		public function get maxWidth():Number			{ return _maxWidth; }
+		public function get numLines():int				{ return _numLines; }
+		
 		override public function get width():Number
 		{
-			if(_maxWidth == MAX_WIDTH_DEFAULT) return super.width;
+			if(_align == ALIGN_LEFT && _maxWidth == MAX_WIDTH_DEFAULT) return super.width;
 			return _maxWidth;
 		}
 		
