@@ -6,8 +6,6 @@ package de.pixelscape.display.blitting
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import de.pixelscape.output.notifier.Notifier;
-	
 	public class BitmapMovieClip extends Bitmap
 	{
 		/* variables */
@@ -60,15 +58,6 @@ package de.pixelscape.display.blitting
 				bounds.bottom = Math.max(bounds.bottom, framePosition.y+ bitmapData.height);
 			}
 			
-			i = _frames.length;
-			while(--i != -1)
-			{
-				framePosition = _frames[i].offset;
-				
-				framePosition.x -= bounds.x;
-				framePosition.y -= bounds.y;
-			}
-			
 			_bounds = bounds;
 			
 			// apply offset
@@ -93,17 +82,21 @@ package de.pixelscape.display.blitting
 			
 			// draw frame
 			var frame:BlitterSnapshot = _frames[index];
-			_canvas.copyPixels(frame.bitmapData, frame.bitmapData.rect, frame.offset);
+			
+			var offset:Point = frame.offset.clone();
+			offset.offset(-_bounds.x, -_bounds.y);
+			
+			_canvas.copyPixels(frame.bitmapData, frame.bitmapData.rect, offset);
 		}
 		
-		public function play(fromFrame:int = -1):void
+		public function play(fromFrame:* = null):void
 		{
 			// cancellation
 			if(_playing) return;
 			if(!_loop && _currentFrame >= _frames.length) return;
 			
 			// seek
-			if(fromFrame != -1) seek(fromFrame);
+			if(fromFrame != null) seek(fromFrame);
 			
 			// play
 			addEventListener(Event.ENTER_FRAME, handleEnterFrame);
@@ -126,8 +119,6 @@ package de.pixelscape.display.blitting
 		
 		public function seek(frame:*):void
 		{
-			Notifier.notify('seek: '+frame);
-			
 			// numeric
 			if(frame is int)
 			{
@@ -204,6 +195,29 @@ package de.pixelscape.display.blitting
 		public function finalize():void
 		{
 			
+		}
+		
+		/* clone */
+		public function clone():BitmapMovieClip
+		{
+			var clone:BitmapMovieClip = new BitmapMovieClip(pixelSnapping, smoothing);
+			
+			for each(var frame:BlitterSnapshot in _frames) clone.addFrame(frame);
+			clone.init();
+			
+			clone.x = x;
+			clone.y = y;
+			
+			clone.scaleX = scaleX;
+			clone.scaleY = scaleY;
+			
+			clone.loop = loop;
+			
+			clone.seek(_currentFrame);
+			if(_playing) clone.play();
+			
+			// return
+			return clone;
 		}
 	}
 }
