@@ -1,18 +1,15 @@
 package de.pixelscape.display.blitting
 {
-	import de.pixelscape.graphics.PBitmap;
-	import de.pixelscape.graphics.Picasso;
-	import de.pixelscape.interfaces.IDrawable;
-	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.IBitmapDrawable;
 	import flash.display.MovieClip;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	
+	import de.pixelscape.graphics.PBitmap;
+	import de.pixelscape.graphics.Picasso;
 
 	public class Blitter
 	{
@@ -47,8 +44,12 @@ package de.pixelscape.display.blitting
 			var bitmapData:BitmapData = new BitmapData(normalizedBounds.width, normalizedBounds.height, true, 0x00000000);
 			bitmapData.draw(source, new Matrix(source.scaleX, 0, 0, source.scaleY, -normalizedBounds.x, -normalizedBounds.y));
 			
+			// label
+			var label:String = null;
+			if(source is MovieClip) label = MovieClip(source).currentFrameLabel;
+			
 			// assemble snapshot
-			var snapshot:BlitterSnapshot = new BlitterSnapshot(bitmapData, new Point(normalizedBounds.x, normalizedBounds.y));
+			var snapshot:BlitterSnapshot = new BlitterSnapshot(bitmapData, new Point(normalizedBounds.x, normalizedBounds.y), label);
 			
 			// return
 			return snapshot;
@@ -59,12 +60,10 @@ package de.pixelscape.display.blitting
 			var bmc:BitmapMovieClip = new BitmapMovieClip();
 			var snapshot:BlitterSnapshot;
 			
-			for(var i:int = 0; i < mc.totalFrames; i++)
+			for(var i:int = 1, c:int = mc.totalFrames + 1; i < c; i++)
 			{
 				mc.gotoAndStop(i);
-				
-				snapshot = Blitter.getSnapShot(mc);
-				bmc.addFrame(snapshot.bitmapData, snapshot.offset);
+				bmc.addFrame(getSnapShot(mc));
 			}
 			
 			bmc.init();

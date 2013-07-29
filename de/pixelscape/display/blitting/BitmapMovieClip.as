@@ -1,61 +1,56 @@
 package de.pixelscape.display.blitting
 {
-	import de.pixelscape.graphics.PBitmap;
-	import de.pixelscape.graphics.Picasso;
-	import de.pixelscape.output.notifier.Notifier;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	
+	import de.pixelscape.output.notifier.Notifier;
 	
 	public class BitmapMovieClip extends Bitmap
 	{
 		/* variables */
-		private var _frames:Vector.<BitmapData>			= new Vector.<BitmapData>();
-		private var _framePositions:Vector.<Point>		= new Vector.<Point>();
+		private var _frames:Vector.<BlitterSnapshot>			= new Vector.<BlitterSnapshot>();
 		
 		private var _canvas:BitmapData;
 		private var _bounds:Rectangle;
 		
-		private var _loop:Boolean						= false;
+		private var _loop:Boolean								= false;
 		
-		private var _currentFrame:int					= 0;
-		private var _playing:Boolean					= false;
+		private var _currentFrame:int							= 0;
+		private var _playing:Boolean							= false;
 		
-		private var _initialized:Boolean				= false;
+		private var _initialized:Boolean						= false;
 		
 		/* constructor */
 		public function BitmapMovieClip(pixelSnapping:String = 'auto', smoothing:Boolean = false)
 		{
 			// super
-			super(null, pixelSnapping,smoothing);
+			super(null, pixelSnapping, smoothing);
 		}
 		
 		/* initialization */
-		public function addFrame(bitmapData:BitmapData, offset:Point):void
+		public function addFrame(snapshot:BlitterSnapshot):void
 		{
-			_frames.push(bitmapData);
-			_framePositions.push(offset);
+			_frames.push(snapshot);
 		}
 		
 		public function init():void
 		{
 			// calculate canvas bounds
-			var bounds:Rectangle = new Rectangle(_framePositions[0].x, _framePositions[0].y, _frames[0].width, _frames[0].height);
+			var firstFrame:BlitterSnapshot = _frames[0];
+			var bounds:Rectangle = new Rectangle(firstFrame.offset.x, firstFrame.offset.y, firstFrame.bitmapData.width, firstFrame.bitmapData.height);
 			
 			var bitmapData:BitmapData;
 			var framePosition:Point;
 			
 			var i:int = _frames.length;
-			while(--i > 0)
+			while(--i != 0)
 			{
 				// get data
-				bitmapData = _frames[i];
-				framePosition = _framePositions[i];
+				bitmapData = _frames[i].bitmapData;
+				framePosition = _frames[i].offset;
 				
 				// match
 				bounds.left = Math.min(bounds.left, framePosition.x);
@@ -66,9 +61,9 @@ package de.pixelscape.display.blitting
 			}
 			
 			i = _frames.length;
-			while(--i > -1)
+			while(--i != -1)
 			{
-				framePosition = _framePositions[i];
+				framePosition = _frames[i].offset;
 				
 				framePosition.x -= bounds.x;
 				framePosition.y -= bounds.y;
@@ -97,7 +92,8 @@ package de.pixelscape.display.blitting
 			_canvas.fillRect(_canvas.rect, 0x00000000);
 			
 			// draw frame
-			_canvas.copyPixels(_frames[index], _frames[index].rect, _framePositions[index]);
+			var frame:BlitterSnapshot = _frames[index];
+			_canvas.copyPixels(frame.bitmapData, frame.bitmapData.rect, frame.offset);
 		}
 		
 		public function play(fromFrame:int = -1):void
@@ -128,14 +124,38 @@ package de.pixelscape.display.blitting
 			_playing = false;
 		}
 		
-		public function seek(frame:int):void
+		public function seek(frame:*):void
 		{
-			// cancellation
-			if(frame < 0) return;
-			if(frame >= _frames.length) return;
+			Notifier.notify('seek: '+frame);
 			
-			_currentFrame = frame;
-			drawFrame(frame);
+			// numeric
+			if(frame is int)
+			{
+				// cancellation
+				if(frame < 0) return;
+				if(frame >= _frames.length) return;
+				
+				_currentFrame = frame;
+				drawFrame(frame);
+				
+				return;
+			}
+			
+			// frame label
+			if(frame is String)
+			{
+				var i:int = _frames.length;
+				while(--i != -1)
+				{
+					if(_frames[i].label == frame)
+					{
+						_currentFrame = i;
+						drawFrame(i);
+						
+						return;
+					}
+				}
+			}
 		}
 		
 		/* getter setter */
