@@ -47,11 +47,11 @@ package de.pixelscape.input
             }
             
             // vars
-            this._enabled		= true;
+            _enabled		= true;
             
-            this._keywords		= new Array();            this._keys			= new Array();
+            _keywords		= new Array();            _keys			= new Array();
             
-            this._string		= "";            this._timestamp		= 0;
+            _string		= "";            _timestamp		= 0;
 		}
 		
 		/** singleton getter */
@@ -76,7 +76,7 @@ package de.pixelscape.input
 		 */
 		public function initialize(dispatcher:EventDispatcher):void
 		{
-			this._dispatcher = dispatcher;
+			_dispatcher = dispatcher;
 			
 			// set listener
 			registerListeners();
@@ -118,7 +118,7 @@ package de.pixelscape.input
 				unregisterListeners();
 				
 				// set var
-				this._dispatcher = value;
+				_dispatcher = value;
 				
 				registerListeners();
 			}
@@ -337,33 +337,33 @@ package de.pixelscape.input
 		/* getter setter */
 		public function get traceKeyCode():Boolean
 		{
-			return this._keyCodeTraceMode;
+			return _keyCodeTraceMode;
 		}
 		
 		public function set traceKeyCode(value:Boolean):void
 		{
-			if(this._keyCodeTraceMode != value)
+			if(_keyCodeTraceMode != value)
 			{
-				if(value) this._dispatcher.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandlerKeyCodeTrace);
-				else this._dispatcher.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandlerKeyCodeTrace);
+				if(value) _dispatcher.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandlerKeyCodeTrace);
+				else _dispatcher.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandlerKeyCodeTrace);
 				
-				this._keyCodeTraceMode = value;
+				_keyCodeTraceMode = value;
 			}
 		}
 		
 		public function get traceCharCode():Boolean
 		{
-			return this._charCodeTraceMode;
+			return _charCodeTraceMode;
 		}
 		
 		public function set traceCharCode(value:Boolean):void
 		{
-			if(this._charCodeTraceMode != value)
+			if(_charCodeTraceMode != value)
 			{
-				if(value) this._dispatcher.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandlerCharCodeTrace);
-				else this._dispatcher.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandlerCharCodeTrace);
+				if(value) _dispatcher.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandlerCharCodeTrace);
+				else _dispatcher.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandlerCharCodeTrace);
 				
-				this._charCodeTraceMode = value;
+				_charCodeTraceMode = value;
 			}
 		}
 
@@ -385,13 +385,13 @@ package de.pixelscape.input
 		
 		private function keyDownHandlerKeyCodeTrace(e:KeyboardEvent):void
 		{
-			if(!Notifier.instance.initialized) Notifier.instance.initialize(this._dispatcher as DisplayObjectContainer);
+			if(!Notifier.instance.initialized) Notifier.instance.initialize(_dispatcher as DisplayObjectContainer);
 			Notifier.notify("keyCode: " + e.keyCode);
 		}
 		
 		private function keyDownHandlerCharCodeTrace(e:KeyboardEvent):void
 		{
-			if(!Notifier.instance.initialized) Notifier.instance.initialize(this._dispatcher as DisplayObjectContainer);
+			if(!Notifier.instance.initialized) Notifier.instance.initialize(_dispatcher as DisplayObjectContainer);
 			Notifier.notify("charCode: " + e.charCode);
 		}
 	}

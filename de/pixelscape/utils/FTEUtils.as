@@ -27,7 +27,7 @@ package de.pixelscape.utils
 			return textLine;
 		}
 		
-		private static function applyProperties(object:Object, properties):void
+		private static function applyProperties(object:Object, properties:Object):void
 		{
 			// cancellation
 			if(object == null) return;
