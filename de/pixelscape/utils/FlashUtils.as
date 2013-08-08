@@ -1,13 +1,14 @@
 package de.pixelscape.utils 
 {
-	import de.pixelscape.output.notifier.Notifier;
-	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.text.Font;
+	
+	import de.pixelscape.output.notifier.Notifier;
 
 	/**
 	 * @author tobias.friese
@@ -110,6 +111,19 @@ package de.pixelscape.utils
 		{
 			if(container == null) return;
 			while(container.numChildren != 0) container.removeChildAt(0);
+		}
+		
+		public static function listFonts(deviceFonts:Boolean = false):void
+		{
+			var out:String = '';
+			var fonts:Array = Font.enumerateFonts(deviceFonts);
+			
+			for each(var font:Font in fonts)
+			{
+				out += font.fontName + ', ' + font.fontStyle + ', ' + font.fontType + "\n";
+			}
+			
+			Notifier.notify(out);
 		}
 		
 		/* dragging */
