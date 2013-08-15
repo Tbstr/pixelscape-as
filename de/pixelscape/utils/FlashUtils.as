@@ -54,6 +54,7 @@ package de.pixelscape.utils
 			return null;
 		}
 		
+		/* properties */
 		public static function copyProperties(target:*, source:Object):*
 		{
 			if(target != null) if(source != null) for(var key:String in source) target[key] = source[key];
@@ -77,6 +78,17 @@ package de.pixelscape.utils
 			}
 			
 			return object;
+		}
+		
+		/* remove */
+		public static function unparent(displayObject:DisplayObject):Boolean
+		{
+			if(displayObject.parent == null) return false;
+			else
+			{
+				displayObject.parent.removeChild(displayObject);
+				return true;
+			}
 		}
 		
 		public static function secureRemove(container:DisplayObjectContainer, object:DisplayObject):Boolean

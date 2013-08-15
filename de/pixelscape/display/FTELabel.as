@@ -20,6 +20,7 @@ package de.pixelscape.display
 		
 		private var _maxWidth:Number;
 		private var _align:String;
+		private var _leading:Number;
 		
 		private var _numLines:int;
 		
@@ -31,7 +32,7 @@ package de.pixelscape.display
 		public static const ALIGN_RIGHT:String				= 'right';
 		
 		/* constructor */
-		public function FTELabel(text:String, format:ElementFormat, maxWidth:Number = 1000000, align:String = 'left')
+		public function FTELabel(text:String, format:ElementFormat, maxWidth:Number = 1000000, align:String = 'left', leading:Number = 0)
 		{
 			// vars
 			_text = text;
@@ -39,6 +40,7 @@ package de.pixelscape.display
 			
 			_maxWidth = maxWidth;
 			_align = align;
+			_leading = leading;
 			
 			// build
 			build();
@@ -79,7 +81,7 @@ package de.pixelscape.display
 				addChild(line);
 				
 				// advance
-				y += line.height;
+				y += line.height + _leading;
 				c++;
 			}
 			
@@ -93,17 +95,19 @@ package de.pixelscape.display
 			// prepare vars
 			var maxWidth:Number 						= MAX_WIDTH_DEFAULT;
 			var align:String							= 'left';
+			var leading:Number							= 0;
 			var container:DisplayObjectContainer 		= null;
 			
 			if(properties != null)
 			{
 				if('maxWidth' in properties) maxWidth = Number(properties.maxWidth); delete properties.maxWidth;
 				if('align' in properties) align = String(properties.align); delete properties.align;
+				if('leading' in properties) leading = Number(properties.leading); delete properties.leading;
 				if('container' in properties) container = DisplayObjectContainer(properties.container); delete properties.container;
 			}
 			
 			// create label
-			var label:FTELabel = new FTELabel(text, format, maxWidth, align);
+			var label:FTELabel = new FTELabel(text, format, maxWidth, align, leading);
 			
 			// apply propeties
 			if(properties != null) FlashUtils.setProperties(label, properties);
@@ -127,8 +131,9 @@ package de.pixelscape.display
 			build();
 		}
 		
-		public function get align():String				{ return _align; }
 		public function get maxWidth():Number			{ return _maxWidth; }
+		public function get align():String				{ return _align; }
+		public function get leading():Number			{ return _leading; }
 		public function get numLines():int				{ return _numLines; }
 		
 		override public function get width():Number

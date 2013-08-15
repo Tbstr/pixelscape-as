@@ -29,5 +29,11 @@ package de.pixelscape.ui.button
 		{
 			return this._button;
 		}
+		
+		/* clone */
+		override public function clone():Event
+		{
+			return new ButtonEvent(type, _button, bubbles, cancelable);
+		}
 	}
 }
