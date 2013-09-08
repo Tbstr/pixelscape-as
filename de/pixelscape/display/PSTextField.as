@@ -1,5 +1,6 @@
 package de.pixelscape.display
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.text.Font;
 	import flash.text.FontType;
 	import flash.text.TextField;
@@ -7,6 +8,7 @@ package de.pixelscape.display
 	import flash.text.TextFormat;
 	
 	import de.pixelscape.utils.Clooney;
+	import de.pixelscape.utils.FlashUtils;
 	
 	
 	public class PSTextField extends flash.text.TextField
@@ -20,13 +22,14 @@ package de.pixelscape.display
 		private var _html:Boolean;
 		private var _maxWidth:Number;
 		
+		/* constructor */
 		public function PSTextField(text:String, format:TextFormat, html:Boolean = false, maxWidth:Number = -1)
 		{
 			// vars
-			_text = text;
 			_format = Clooney.cloneTextFormat(format);
-			_html = html;
-			_maxWidth = maxWidth;
+			
+			this.maxWidth = maxWidth;
+			this.html = html;
 			
 			// set embedded state
 			if(embeddedList == null) embeddedList = Font.enumerateFonts();
@@ -44,8 +47,92 @@ package de.pixelscape.display
 			
 			// settings
 			selectable = false;
+			condenseWhite = true;
 			
-			if(maxWidth != -1)
+			// apply format
+			defaultTextFormat = _format;
+			
+			// set text
+			this.text = text;
+		}
+		
+		/* static constructor */
+		public static function create(value:String, textFormat:TextFormat, properties:Object = null):PSTextField
+		{
+			// create
+			var tf:PSTextField = new PSTextField(value, textFormat);
+			
+			// apply properties
+			if(properties != null) 
+			{
+				// container property
+				if("container" in properties)
+				{
+					if(properties.container is DisplayObjectContainer)
+					{
+						properties.container.addChild(tf);
+						delete properties.container;
+					}
+				}
+				
+				// other properties
+				FlashUtils.setProperties(tf, properties);
+			}
+			
+			return tf;
+		}
+		
+		/* getter setter */
+		override public function get text():String						{ return _text; }
+		override public function set text(value:String):void
+		{
+			_text = value;
+			
+			if(_html) super.htmlText = value;
+			else super.text = value;
+		}
+		
+		override public function get htmlText():String					{ return _text; }
+		override public function set htmlText(value:String):void
+		{
+			_html = true;
+			_text = value;
+			
+			super.htmlText = value;
+		}
+		
+		public function get html():Boolean								{ return _html; }
+		public function set html(value:Boolean):void
+		{
+			// cancellation
+			if(value == _html) return;
+			
+			// set
+			_html = value;
+			
+			// re apply text
+			if(_text != null) text = _text;
+		}
+		
+		public function get maxWidth():Number							{ return _maxWidth; }
+		public function set maxWidth(value:Number):void
+		{
+			// cancellation
+			if(_maxWidth == value) return;
+			
+			// set
+			_maxWidth = value;
+			
+			// apply
+			if(value == -1)
+			{
+				width = 100;
+				
+				multiline = false;
+				wordWrap = false;
+				autoSize = TextFieldAutoSize.NONE;
+			}
+			else
 			{
 				width = maxWidth;
 				
@@ -53,17 +140,6 @@ package de.pixelscape.display
 				wordWrap = true;
 				autoSize = TextFieldAutoSize.LEFT;
 			}
-			
-			// apply format
-			defaultTextFormat = _format;
-			
-			// set text
-			if(html)
-			{
-				condenseWhite = true;
-				htmlText = text;
-			}
-			else this.text = text;
 		}
 	}
 }
