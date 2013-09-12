@@ -1,8 +1,7 @@
 package de.pixelscape.display.viewManager.transition
 {
 	import com.greensock.TweenLite;
-	
-	import de.pixelscape.output.notifier.Notifier;
+	import com.greensock.easing.Ease;
 
 	/**
 	 * @author tobiasfriese
@@ -11,9 +10,9 @@ package de.pixelscape.display.viewManager.transition
 	{
 		/* variables */
 		private var _duration:Number;
-		private var _easing:Function;		private var _delay:Number;
+		private var _easing:Ease;		private var _delay:Number;
 		
-		public function FadeTransition(duration:Number = .5, easing:Function = null, delay:Number = 0)
+		public function FadeTransition(duration:Number = .5, easing:Ease = null, delay:Number = 0)
 		{
 			_duration = duration;
 			_easing = easing;

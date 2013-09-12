@@ -2,10 +2,7 @@
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Cubic;
-	
-	import de.pixelscape.graphics.Picasso;
-	import de.pixelscape.output.notifier.Notifier;
-	import de.pixelscape.utils.MathUtils;
+	import com.greensock.easing.Ease;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
@@ -13,6 +10,9 @@
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	
+	import de.pixelscape.graphics.Picasso;
+	import de.pixelscape.utils.MathUtils;
 
 	/**
 	 * This class provides functionality for displaying and scrolling
@@ -31,7 +31,7 @@
 		private var _width:Number;
 		private var _height:Number;
 		
-		private var _transition:Function					= Cubic.easeOut;
+		private var _transition:Ease						= Cubic.easeOut;
 		private var _time:Number							= .5;
 		
 		private var _positionX:Number						= 0;
@@ -375,7 +375,7 @@
 		 * @param transition the transition name or function of the movement
 		 * @param time the duration for the animation
 		 */
-		public function setTween(transition:Function, time:Number):void
+		public function setTween(transition:Ease, time:Number):void
 		{
 			this._transition = transition;
 			this._time = time;

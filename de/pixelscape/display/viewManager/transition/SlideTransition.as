@@ -1,7 +1,8 @@
 package de.pixelscape.display.viewManager.transition
 {
 	import com.greensock.TweenLite;
-
+	import com.greensock.easing.Ease;
+	
 	import flash.geom.Point;
 
 	/**
@@ -12,13 +13,13 @@ package de.pixelscape.display.viewManager.transition
 		/* variables */
 		private var _direction:String;
 		private var _duration:Number;
-		private var _easing:Function;
+		private var _easing:Ease;
 		private var _delay:Number;
 		
 		/* constants */
 		public static const DIRECTION_LEFT:String			= "left";		public static const DIRECTION_RIGHT:String			= "right";		public static const DIRECTION_UP:String				= "up";		public static const DIRECTION_DOWN:String			= "down";		public static const DIRECTION_AUTOMATIC_X:String	= "automaticX";		public static const DIRECTION_AUTOMATIC_Y:String	= "automaticY";
 		
-		public function SlideTransition(direction:String = "automaticX", duration:Number = .5, easing:Function = null, delay:Number = 0)
+		public function SlideTransition(direction:String = "automaticX", duration:Number = .5, easing:Ease = null, delay:Number = 0)
 		{
 			this._direction = direction;
 			this._duration = duration;

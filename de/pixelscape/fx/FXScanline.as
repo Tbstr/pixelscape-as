@@ -1,18 +1,18 @@
 package de.pixelscape.fx 
 {
-	import flash.display.DisplayObjectContainer;
-	import de.pixelscape.graphics.Picasso;
-
 	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
+	import com.greensock.easing.Ease;
 	import com.greensock.easing.Expo;
-
+	
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.filters.GlowFilter;
 	import flash.geom.Rectangle;
+	
+	import de.pixelscape.graphics.Picasso;
 
 	/**
 	 * @author Sickdog
@@ -24,7 +24,7 @@ package de.pixelscape.fx
 		private var _bounds:Rectangle;
 		
 		private var _duration:Number		= 1;
-		private var _ease:Function			= Expo.easeInOut;
+		private var _ease:Ease				= Expo.easeInOut;
 		
 		/* architecture */
 		private var _mask:Shape;		private var _line:Sprite;

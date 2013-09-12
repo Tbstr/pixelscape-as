@@ -1,6 +1,8 @@
 package de.pixelscape.utils 
 {
 	import com.greensock.TweenLite;
+	import com.greensock.easing.Ease;
+	
 	import flash.display.DisplayObject;
 
 	/**
@@ -69,10 +71,10 @@ package de.pixelscape.utils
 			}
 		}
 
-		public function applyTweened(displayObject:DisplayObject, time:Number, transition:Function, position:Boolean = true, scalation:Boolean = true, rotation:Boolean = true):void
+		public function applyTweened(displayObject:DisplayObject, time:Number, transition:Ease, position:Boolean = true, scalation:Boolean = true, rotation:Boolean = true):void
 		{
 			if(position)	TweenLite.to(displayObject, time, {x:_x, y:_y, z:_z, ease:transition});
-			if(scalation)	TweenLite.to(displayObject, time, {scaleX:_scaleX, scaleY:_scaleY, scaleZ:_scaleZ ease:transition});
+			if(scalation)	TweenLite.to(displayObject, time, {scaleX:_scaleX, scaleY:_scaleY, scaleZ:_scaleZ, ease:transition});
 			if(rotation)	TweenLite.to(displayObject, time, {rotationX:_rotationX, rotationY:_rotationY, rotationZ:_rotationZ, ease:transition});
 		}
 
