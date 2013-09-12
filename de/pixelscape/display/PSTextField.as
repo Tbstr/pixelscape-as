@@ -17,7 +17,8 @@ package de.pixelscape.display
 		private static var embeddedList:Array					= null;
 		
 		/* variables */
-		private var _text:String;
+		private var _lastAppliedText:String;
+		
 		private var _format:TextFormat;
 		private var _html:Boolean;
 		private var _maxWidth:Number;
@@ -83,22 +84,24 @@ package de.pixelscape.display
 		}
 		
 		/* getter setter */
-		override public function get text():String						{ return _text; }
+		override public function get text():String
+		{
+			if(_html) return super.htmlText;
+			else return super.text;
+		}
 		override public function set text(value:String):void
 		{
-			_text = value;
+			_lastAppliedText = value;
 			
 			if(_html) super.htmlText = value;
 			else super.text = value;
 		}
 		
-		override public function get htmlText():String					{ return _text; }
+		override public function get htmlText():String					{ return text; }
 		override public function set htmlText(value:String):void
 		{
 			_html = true;
-			_text = value;
-			
-			super.htmlText = value;
+			text = value;
 		}
 		
 		public function get html():Boolean								{ return _html; }
@@ -111,7 +114,7 @@ package de.pixelscape.display
 			_html = value;
 			
 			// re apply text
-			if(_text != null) text = _text;
+			text = _lastAppliedText;
 		}
 		
 		public function get maxWidth():Number							{ return _maxWidth; }
