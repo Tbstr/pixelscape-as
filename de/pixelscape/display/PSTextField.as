@@ -91,8 +91,13 @@ package de.pixelscape.display
 		}
 		override public function set text(value:String):void
 		{
+			// cancellation
+			if(value == null) return;
+			
+			// vars
 			_lastAppliedText = value;
 			
+			// apply
 			if(_html) super.htmlText = value;
 			else super.text = value;
 		}
@@ -114,7 +119,7 @@ package de.pixelscape.display
 			_html = value;
 			
 			// re apply text
-			text = _lastAppliedText;
+			if(_lastAppliedText != null) text = _lastAppliedText;
 		}
 		
 		public function get maxWidth():Number							{ return _maxWidth; }
