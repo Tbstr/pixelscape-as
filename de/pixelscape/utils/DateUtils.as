@@ -240,5 +240,11 @@ package de.pixelscape.utils
 			
 			return date;
 		}
+		
+		public static function microtime():int
+		{
+			var date:Date = new Date();
+			return date.getTime();
+		}
 	}
 }

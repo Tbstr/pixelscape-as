@@ -6,7 +6,7 @@ package de.pixelscape.display
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.events.*;
+	import flash.events.Event;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;	
@@ -71,13 +71,11 @@ package de.pixelscape.display
 		{
 			// container
 			_container = new Sprite();
-			_container.x = -Math.round(_cntWidth / 2);
 			_container.y = -_cntHeight;
 			addChild(_container);
 			
 			// mask
 			_containerMask = new Shape();
-			_containerMask.x = -Math.round(_cntWidth / 2);
 			_containerMask.y = -_cntHeight;
 			_containerMask.visible = false;
 			
@@ -95,7 +93,6 @@ package de.pixelscape.display
 			_mirrorBitmap = new BitmapData(_cntWidth, _mLength, true, 0x00000000);
 			
 			_mirror = new Bitmap(_mirrorBitmap);
-			_mirror.x = _container.x;
 			_mirror.y = _mLength;
 			_mirror.scaleY = -1;
 			_mirror.alpha = _mAlpha;
@@ -154,7 +151,7 @@ package de.pixelscape.display
 		{
 			// img
 			_mirrorBitmap.fillRect(_mirrorBitmap.rect, 0x00000000);
-			_mirrorBitmap.draw(this, new Matrix(1, 0, 0, 1, Math.round(_cntWidth / 2), _mLength), null, "normal", new Rectangle(0, 0, _cntWidth, _mLength));
+			_mirrorBitmap.draw(this, new Matrix(1, 0, 0, 1, 0, _mLength), null, "normal", new Rectangle(0, 0, _cntWidth, _mLength));
 
 			_alphaMap.copyChannel(_mirrorBitmap, _mirrorBitmap.rect, new Point(0, 0), 8, 1);
 			_alphaMap.draw(_gradientContainer, new Matrix(), null, "multiply");
@@ -179,5 +176,7 @@ package de.pixelscape.display
 			removeEventListener(Event.ENTER_FRAME, updateMirror);
 			_capturing = false;
 		}
+		
+		public function get mirror():Bitmap				{ return _mirror; }
 	}
 }
